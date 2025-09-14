@@ -1,0 +1,171 @@
+(defpoll time :interval "0.5s"
+              :initial "initial-value"  ; optional, defaults to poll at startup
+  `date +%H%n%M%n%S`)
+
+
+(defwidget wnet []
+  (box
+    :orientation "vertical"
+  )
+)
+
+(defwidget bar []
+  (centerbox :class "bar"
+    :orientation "vertical"
+    (box
+      :valign "start"
+      "a"
+    )
+    (box :class "clock"
+      :valign "center"
+      :vexpand true 
+      "${time}"
+    )
+    (box
+      :valign "end"
+      :halign "center"
+      :orientation "vertical"
+      :vexpand true
+      " "
+      (volume)
+    )
+  )
+)
+
+(defvar volume-visible false)
+(defvar volume-state "low")
+(defvar volume-level "0")
+(defwidget volume []
+  (eventbox
+    :onhover "eww update volume-visible=true"
+    :onhoverlost "eww update volume-visible=false"
+    :cursor "pointer"
+    (box
+      :space-evenly false
+      :orientation "vertical"
+      (revealer
+        :transition "slideup"
+        :reveal volume-visible
+        (box
+          :orientation "vertical"
+          (button
+            :onclick "/home/charashenko/.config/scripts/volctl.sh up"
+            (image :class "fg_color"
+              :path "/home/charashenko/.config/icons/plus.svg"
+              :image-width 25
+              :fill-svg "#B0B4BC"
+            )
+          )
+          (button
+            :onclick "/home/charashenko/.config/scripts/volctl.sh down"
+            (image :class "fg_color"
+              :path "/home/charashenko/.config/icons/minus.svg"
+              :image-width 25
+              :fill-svg "#B0B4BC"
+            )
+          )
+        )
+      )
+      (button
+        :onclick "/home/charashenko/.config/scripts/volctl.sh mute"
+        :style "margin-bottom: 10px;"
+        (image :class "fg_color"
+          :path "/home/charashenko/.config/icons/volume_${volume-state}.svg"
+          :image-width 25
+          :fill-svg "#B0B4BC"
+        )
+      )
+    )
+  )
+)
+
+(defwindow example
+  :monitor 0
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width "2%"
+                      :height "100%"
+                      :anchor "center left")
+  :stacking "fg"
+  :reserve (struts :distance "2%" :side "left")
+  :windowtype "toolbar"
+  :exclusive true
+  :wm-ignore false
+  (bar)
+)
+
+(defwindow example2
+  :monitor 0
+  :geometry (geometry :x "2%"
+                      :y "0%"
+                      :width "0%"
+                      :height "0%"
+                      :anchor "bottom left")
+  :stacking "fg"
+  "aa"
+)
+
+(defwindow tl_corner
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :anchor "top left"
+  )
+  :stacking "fg"
+  (box :class "viewport tl"
+  )
+)
+
+(defwindow tr_corner
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "10px"
+    :height "10px"
+    :anchor "top right"
+  )
+  :stacking "fg"
+  (box :class "viewport tr"
+  )
+)
+
+(defwindow bl_corner
+  :monitor 0
+  :geometry (geometry
+    :x "2%"
+    :y "0%"
+    :anchor "bottom left"
+  )
+  :stacking "fg"
+  (box :class "viewport bl"
+  )
+)
+
+(defwindow br_corner
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "10px"
+    :height "10px"
+    :anchor "bottom right"
+  )
+  :stacking "fg"
+  (box :class "viewport br"
+  )
+)
+
+(defwindow t_edge
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "100%"
+    :anchor "top center"
+  )
+  :stacking "fg"
+  (box :class "viewport tc"
+  )
+)

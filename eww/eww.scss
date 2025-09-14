@@ -1,0 +1,72 @@
+* {
+    all: unset; //Unsets everything so you can style everything from scratch
+}
+
+
+$bg_color: #090b10;
+$hl_color: #F03269; // #f38ba8;
+$fg_color: #B0B4BC;
+
+//Global Styles
+.bar {
+    background-color: $bg_color;
+    color: #b0b4bc;
+    font-family: JetBrains Mono;
+    font-size: 20px;
+    border: 1px solid $hl_color;
+}
+
+.fg_color {
+  color: $fg_color;
+}
+
+.clock {
+  margin: 4px;
+  padding-top: 2px;
+  padding-bottom: 3px;
+  border-top: 2px dashed $fg_color;
+  border-bottom: 2px dashed $fg_color;
+}
+
+// must be the same number
+$corner_radius: 10px;
+$n_corner_radius: -10px;
+
+.viewport {
+  background-color: transparent;
+  margin: 5px;
+  padding: $corner_radius;
+  &.tl {
+    box-shadow: $n_corner_radius $n_corner_radius 0px 0px $bg_color;
+    margin-left: 0px;
+    border-left: 1px solid $hl_color;
+    border-top: 1px solid $hl_color;
+    border-top-left-radius: $corner_radius;
+  }
+  &.tc {
+    box-shadow: 0px -10px 0px 0px $bg_color;
+    border-top: 1px solid $hl_color;
+    border-right: 1px solid $hl_color;
+  }
+  &.tr {
+    box-shadow: $corner_radius $n_corner_radius 0px 0px $bg_color;
+    border-top: 1px solid $hl_color;
+    border-right: 1px solid $hl_color;
+    border-top-right-radius: $corner_radius;
+  }
+  
+  &.bl {
+    box-shadow: $n_corner_radius $corner_radius 0px 0px $bg_color;
+    margin-left: 0px;
+    border-bottom: 1px solid $hl_color;
+    border-left: 1px solid $hl_color;
+    border-bottom-left-radius: $corner_radius;
+  }
+  &.br {
+    box-shadow: $corner_radius $corner_radius 0px 0px $bg_color;
+    border-bottom: 1px solid $hl_color;
+    border-right: 1px solid $hl_color;
+    border-bottom-right-radius: $corner_radius;
+  }
+}
+

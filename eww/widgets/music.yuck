@@ -1,0 +1,92 @@
+(defpoll name
+  :interval "1s"
+  "scripts/music/name.sh"
+)
+
+(defwidget icon []
+  (box
+    :class "widget_holder"
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    (button
+      :onclick "scripts/music/launch.sh"
+      (box
+        :class "music_icon"
+        :orientation "h"
+        :space-evenly false
+        :halign "center"
+        ""
+      )
+    )
+  )
+)
+
+(defwidget track_name []
+  (box
+    :class "music_track_name"
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    name
+  )
+)
+
+(defwidget music_prev []
+  (box
+    :class "music_control_button"
+    (button
+      :onclick "scripts/music/prev.sh"
+      "  "
+    )
+  )
+)
+
+(defwidget music_play_pause []
+  (box
+    :class "music_control_button"
+    (button
+      :onclick "scripts/music/play_pause.sh"
+      "  "
+    )
+  )
+)
+
+(defwidget music_next []
+  (box
+    :class "music_control_button"
+    (button
+      :onclick "playerctl next"
+      "  "
+    )
+  )
+)
+
+(defwidget music_controls []
+  (box
+    :class "music_controls_box"
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    (music_prev)
+    (music_play_pause)
+    (music_next)
+  )
+)
+
+(defwidget music []
+  (box
+    :orientation "horizontal"
+    :halign "center"
+    (icon)
+    (box
+      :class "widget_holder"
+      :orientation "horizontal"
+      :halign "center"
+      :space-evenly false
+      (music_controls)
+      (track_name)
+    )
+  )
+  
+)
