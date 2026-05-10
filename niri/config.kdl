@@ -105,12 +105,23 @@ output "PNP(AOC) 24G1WG4 0x0003FD51" {
     focus-at-startup
 }
 
+output "HDMI-A-1" {
+    variable-refresh-rate
+    off
+}
+window-rule {
+  geometry-corner-radius 10
+
+  // Clips window contents to the rounded corner boundaries.
+  clip-to-geometry true
+}
+
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 0
+    gaps 4
 
     // Set transparent workspace background color.
     background-color "transparent"
@@ -278,9 +289,21 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 //spawn-at-startup "~/.config/niri/autostart.sh"
-spawn-sh-at-startup "swaybg -m fill -i ~/wallpapers/nasa_mod.png"
-spawn-sh-at-startup "eww daemon"
-spawn-sh-at-startup "eww open example"
+//spawn-sh-at-startup "swaybg -m fill -i ~/wallpapers/nasa_mod.png"
+//spawn-sh-at-startup "eww daemon"
+//spawn-sh-at-startup "eww open example"
+spawn-at-startup "qs" "-c" "noctalia-shell"
+
+// Set the overview wallpaper on the backdrop.
+layer-rule {
+  match namespace="^noctalia-overview*"
+  place-within-backdrop true
+}
+
+debug {
+  // Allows notification actions and window activation from Noctalia.
+  honor-xdg-activation-with-invalid-serial
+}
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -343,6 +366,15 @@ window-rule {
 
     open-maximized true
 }
+
+// Maximize Freecad by default.
+window-rule {
+    match app-id="org.freecad.FreeCAD"
+
+    open-maximized true
+}
+
+
 
 // Open file manager yazi in a floating window
 /-window-rule {
@@ -411,9 +443,13 @@ binds {
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+c hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
-    Mod+f hotkey-overlay-title="Open file manager: yazi" { spawn "kitty" "-T=yazi" "yazi"; }
-    Mod+r hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
-    Mod+Escape hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock" "-i" "~/wallpapers/wallhaven-l8d8my.png"; }
+    Mod+f hotkey-overlay-title="Open file manager: yazi" { spawn-sh "EDITOR=nvim kitty -T=yazi yazi"; }
+    //Mod+r hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+r { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+
+    //Mod+Escape hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock" "-i" "~/wallpapers/wallhaven-l8d8my.png"; }
+    Mod+Escape { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
@@ -587,7 +623,7 @@ binds {
     Mod+Shift+R { switch-preset-window-height; }
     Mod+Ctrl+R { reset-window-height; }
     Mod+m { maximize-column; }
-    Mod+Shift+F { fullscreen-window; }
+    Mod+g { fullscreen-window; }
 
     // Expand the focused column to space not taken up by other fully visible columns.
     // Makes the column "fill the rest of the space".
@@ -651,4 +687,9 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
+    
+    Mod+S { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "settings" "toggle"; }
 }
+
+include "./noctalia.kdl"
+
